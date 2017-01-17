@@ -147,6 +147,8 @@ IF EXIST "%DEPLOYMENT_TARGET%\manage.py" (
   )
 )
 
+env\scripts\python server.py
+
 popd
 
 :postPython
@@ -176,5 +178,4 @@ exit /b 1
 
 :end
 endlocal
-env\scripts\python server.py
 echo Finished successfully.
