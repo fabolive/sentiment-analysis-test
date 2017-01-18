@@ -34,7 +34,9 @@ headers = {
     'Ocp-Apim-Subscription-Key': "c5f8eb22d7214d8f894e58e8bd9cb652",
 }
 
-mongo_uri = "mongodb://fabio-test:D4xPwWriS8x7cqfRgjFcqzjOSW3dYKqS37ckOZ9d3TDq67QAYuQBydBL11DGqOihMwIdTZ9rchV9Ur8VqvGcsg==@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE"
+mongo_user = os.getenv(CUSTOMCONNSTR_DB_USER)
+mongo_password = os.getenv(CUSTOMCONNSTR_DB_PASSWORD)
+mongo_uri = "mongodb://%s:%s@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE" % (mongo_user, mongo_password)
 client = pymongo.MongoClient(mongo_uri)
 database = client.sentiment_db
 collection = database.sentiments
