@@ -109,7 +109,7 @@ conf = {
     "/": {
         "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
         "tools.response_headers.on": True,
-        "tools.staticdir.root": os.path.abspath(os.getcwd())
+        "tools.staticdir.root": os.path.abspath(os.path.dirname(__file__))
     },
     "/public": {
         "tools.staticdir.on": True,
