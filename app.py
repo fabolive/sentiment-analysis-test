@@ -35,7 +35,7 @@ headers = {
 }
 
 mongo_uri = "mongodb://fabio-test:D4xPwWriS8x7cqfRgjFcqzjOSW3dYKqS37ckOZ9d3TDq67QAYuQBydBL11DGqOihMwIdTZ9rchV9Ur8VqvGcsg==@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE"
-client = pymongo.MongoClient(uri)
+client = pymongo.MongoClient(mongo_uri)
 
 class SentimentAnalysisService:
     """Wrapper on the Personality Insights service"""
