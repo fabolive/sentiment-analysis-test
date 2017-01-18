@@ -51,7 +51,7 @@ class SentimentAnalysisService:
         if self.url is None:
             raise Exception("No service is bound to this app")
         body = '{"documents":[{"id":"1","text":"%s"}]}'%text
-        print("URL" + self.url)
+        #print("URL" + self.url)
         response = requests.post(self.url + "/text/analytics/v2.0/sentiment",
                           headers = headers,
                           json=json.loads(body)
@@ -94,7 +94,7 @@ class DemoService(object):
         """
         try:
             data = self.service.getProfile(text)
-            print(data)
+            #print(data)
             return json.dumps(data)
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
