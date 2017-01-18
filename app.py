@@ -36,6 +36,8 @@ headers = {
 
 mongo_uri = "mongodb://fabio-test:D4xPwWriS8x7cqfRgjFcqzjOSW3dYKqS37ckOZ9d3TDq67QAYuQBydBL11DGqOihMwIdTZ9rchV9Ur8VqvGcsg==@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE"
 client = pymongo.MongoClient(mongo_uri)
+database = client.sentiment_db
+collection = database.sentiments
 
 class SentimentAnalysisService:
     """Wrapper on the Personality Insights service"""
@@ -98,6 +100,7 @@ class DemoService(object):
         try:
             data = self.service.getProfile(text)
             print(data)
+            collection.insert_one(data)
             return json.dumps(data)
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
