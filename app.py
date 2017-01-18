@@ -27,6 +27,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 import httplib, urllib, base64
 import logging
+import pymongo
 
 headers = {
     'Content-Type': 'application/json',
