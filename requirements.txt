@@ -1,3 +1,6 @@
+httplib
+urllib
+base64
 cherrypy
 mako
 requests
