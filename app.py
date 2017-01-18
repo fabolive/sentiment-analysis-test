@@ -28,9 +28,10 @@ from mako.lookup import TemplateLookup
 import httplib, urllib, base64
 import logging
 
+text_analytics_api_key = os.getenv('CUSTOMCONNSTR_TXT_ANALYTICS')
 headers = {
     'Content-Type': 'application/json',
-    'Ocp-Apim-Subscription-Key': "c5f8eb22d7214d8f894e58e8bd9cb652",
+    'Ocp-Apim-Subscription-Key': text_analytics_api_key,
 }
 
 
