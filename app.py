@@ -33,6 +33,8 @@ headers = {
     'Ocp-Apim-Subscription-Key': "c5f8eb22d7214d8f894e58e8bd9cb652",
 }
 
+mongo_uri = "mongodb://fabio-test:D4xPwWriS8x7cqfRgjFcqzjOSW3dYKqS37ckOZ9d3TDq67QAYuQBydBL11DGqOihMwIdTZ9rchV9Ur8VqvGcsg==@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE"
+client = pymongo.MongoClient(uri)
 
 class SentimentAnalysisService:
     """Wrapper on the Personality Insights service"""
@@ -126,6 +128,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
+
 
 wsgi_app = cherrypy.Application(DemoService(sentimentAnalysis), "/", config=conf)
 

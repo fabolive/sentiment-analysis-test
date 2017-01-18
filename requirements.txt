@@ -1,3 +1,5 @@
 cherrypy
 mako
 requests
+pymongo
+ipaddress
