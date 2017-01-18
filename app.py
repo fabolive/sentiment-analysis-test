@@ -100,6 +100,8 @@ class DemoService(object):
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 
+wsgi_app = cherrypy.Application(DemoService(sentimentAnalysis), "/", config=conf)
+
 if __name__ == '__main__':
     lookup = TemplateLookup(directories=["templates"])
 
@@ -146,7 +148,6 @@ if __name__ == '__main__':
     # Start the server
     print("Listening on %s:%d" % (HOST_NAME, PORT_NUMBER))
     #cherrypy.quickstart(DemoService(sentimentAnalysis), "/", config=conf)
-    wsgi_app = cherrypy.Application(DemoService(sentimentAnalysis), "/", config=conf)
     from wsgiref.simple_server import make_server
     httpd = make_server('', PORT_NUMBER, wsgi_app)
     httpd.serve_forever()
