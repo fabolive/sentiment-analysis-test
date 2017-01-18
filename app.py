@@ -100,7 +100,7 @@ class DemoService(object):
         try:
             data = self.service.getProfile(text)
             print(data)
-            collection.insert_one(data)
+            collection.insert_one({'text':text, 'sentiment': data})
             return json.dumps(data)
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
