@@ -92,10 +92,10 @@ class DemoService(object):
         Send 'text' to the Personality Insights API
         and return the response.
         """
-	try:
-	    data = self.service.getProfile(text)
+        try:
+            data = self.service.getProfile(text)
             print(data)
-	    return json.dumps(data)
+            return json.dumps(data)
         except Exception as e:
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
