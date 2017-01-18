@@ -50,7 +50,7 @@ class SentimentAnalysisService:
 
         if self.url is None:
             raise Exception("No service is bound to this app")
- 	body = '{"documents":[{"id":"1","text":"%s"}]}'%text
+        body = '{"documents":[{"id":"1","text":"%s"}]}'%text
         print "URL" + self.url
         response = requests.post(self.url + "/text/analytics/v2.0/sentiment",
                           headers = headers,
