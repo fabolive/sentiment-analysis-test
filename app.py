@@ -116,11 +116,20 @@ conf = {
         "tools.staticdir.dir": "./public"
     }
 }
+
+
+lookup = TemplateLookup(directories=["templates"])
+
+# You must initialize logging, otherwise you'll not see debug output.
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.setLevel(logging.DEBUG)
+requests_log.propagate = True
+
 wsgi_app = cherrypy.Application(DemoService(sentimentAnalysis), "/", config=conf)
 
 if __name__ == '__main__':
-    lookup = TemplateLookup(directories=["templates"])
-
     HOST_NAME = '0.0.0.0'
     PORT_NUMBER = int(os.getenv("PORT", "10000"))
     #cherrypy.config.update({
@@ -128,14 +137,6 @@ if __name__ == '__main__':
     #    "server.socket_port": PORT_NUMBER,
     #})
 
-
-    # You must initialize logging, otherwise you'll not see debug output.
-    logging.basicConfig()
-    logging.getLogger().setLevel(logging.DEBUG)
-    requests_log = logging.getLogger("requests.packages.urllib3")
-    requests_log.setLevel(logging.DEBUG)
-    requests_log.propagate = True
-    
     # Start the server
     print("Listening on %s:%d" % (HOST_NAME, PORT_NUMBER))
     #cherrypy.quickstart(DemoService(sentimentAnalysis), "/", config=conf)
