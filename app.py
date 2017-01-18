@@ -36,7 +36,7 @@ headers = {
 
 mongo_user = os.getenv('CUSTOMCONNSTR_DB_USER')
 mongo_password = os.getenv('CUSTOMCONNSTR_DB_PASSWORD')
-mongo_uri = "mongodb://%s:%s@fabio-test.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE" % (mongo_user, mongo_password)
+mongo_uri = "mongodb://%s:%s@%s.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE" % (mongo_user, mongo_password, mongo_user)
 client = pymongo.MongoClient(mongo_uri)
 database = client.sentiment_db
 collection = database.sentiments
