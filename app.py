@@ -100,40 +100,34 @@ class DemoService(object):
             print("[Errno {0}] {1}".format(e.errno, e.strerror))
 
 
+# Create the Sentiment Analysis Wrapper
+sentimentAnalysis = SentimentAnalysisService()
+
+# Configure 2 paths: "public" for all JS/CSS content, and everything
+# else in "/" handled by the DemoService
+conf = {
+    "/": {
+        "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+        "tools.response_headers.on": True,
+        "tools.staticdir.root": os.path.abspath(os.getcwd())
+    },
+    "/public": {
+        "tools.staticdir.on": True,
+        "tools.staticdir.dir": "./public"
+    }
+}
 wsgi_app = cherrypy.Application(DemoService(sentimentAnalysis), "/", config=conf)
 
 if __name__ == '__main__':
     lookup = TemplateLookup(directories=["templates"])
 
-    # Get host/port from the Bluemix environment, or default to local
-    #HOST_NAME = os.getenv("VCAP_APP_HOST", "127.0.0.1")
     HOST_NAME = '0.0.0.0'
     PORT_NUMBER = int(os.getenv("PORT", "10000"))
-    cherrypy.config.update({
-        "server.socket_host": HOST_NAME,
-        "server.socket_port": PORT_NUMBER,
-    })
+    #cherrypy.config.update({
+    #    "server.socket_host": HOST_NAME,
+    #    "server.socket_port": PORT_NUMBER,
+    #})
 
-    # Configure 2 paths: "public" for all JS/CSS content, and everything
-    # else in "/" handled by the DemoService
-    conf = {
-        "/": {
-            "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-            "tools.response_headers.on": True,
-            "tools.staticdir.root": os.path.abspath(os.getcwd())
-        },
-        "/public": {
-            "tools.staticdir.on": True,
-            "tools.staticdir.dir": "./public"
-        }
-    }
-
-    try:
-    	import http.client as http_client
-    except ImportError:
-    # Python 2
-    	import httplib as http_client
-    http_client.HTTPConnection.debuglevel = 1
 
     # You must initialize logging, otherwise you'll not see debug output.
     logging.basicConfig()
@@ -142,12 +136,10 @@ if __name__ == '__main__':
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
     
-    # Create the Sentiment Analysis Wrapper
-    sentimentAnalysis = SentimentAnalysisService()
-    
     # Start the server
     print("Listening on %s:%d" % (HOST_NAME, PORT_NUMBER))
     #cherrypy.quickstart(DemoService(sentimentAnalysis), "/", config=conf)
+
     from wsgiref.simple_server import make_server
     httpd = make_server('', PORT_NUMBER, wsgi_app)
     httpd.serve_forever()
