@@ -74,13 +74,12 @@ def get_wsgi_handler(handler_name):
                 if should_call:
                     handler = handler()
             break
-        except ImportError as e:
+        except ImportError:
             module_name, _, callable_name = module_name.rpartition('.')
             should_call = callable_name.endswith('()')
             callable_name = callable_name[:-2] if should_call else callable_name
             name_list.insert(0, (callable_name, should_call))
             handler = None
-            raise ImportError(str(e) + ': module_name = ' + module_name)
 
     if handler is None:
         raise ValueError('"%s" could not be imported' % handler_name)
