@@ -29,9 +29,10 @@ import httplib, urllib, base64
 import logging
 import pymongo
 
+text_analytics_api_key = os.getenv('CUSTOMCONNSTR_TXT_ANALYTICS')
 headers = {
     'Content-Type': 'application/json',
-    'Ocp-Apim-Subscription-Key': "c5f8eb22d7214d8f894e58e8bd9cb652",
+    'Ocp-Apim-Subscription-Key': text_analytics_api_key,
 }
 
 mongo_user = os.getenv('CUSTOMCONNSTR_DB_USER')
@@ -58,7 +59,7 @@ class SentimentAnalysisService:
         if self.url is None:
             raise Exception("No service is bound to this app")
         body = '{"documents":[{"id":"1","text":"%s"}]}'%text
-        print("URL" + self.url)
+        #print("URL" + self.url)
         response = requests.post(self.url + "/text/analytics/v2.0/sentiment",
                           headers = headers,
                           json=json.loads(body)

@@ -31,7 +31,6 @@ $(document).ready(function() {
     $loading = $('.loading'),
     $error = $('.error'),
     $errorMsg = $('.errorMsg'),
-    $traits = $('.traits'),
     $results = $('.results');
 
   /**
@@ -64,7 +63,6 @@ $(document).ready(function() {
     $('.analysis-btn').blur();
     $loading.show();
     $error.hide();
-    $traits.hide();
     $results.hide();
 
     $.ajax({
@@ -106,98 +104,30 @@ $(document).ready(function() {
     $errorMsg.text(error || defaultErrorMsg);
   }
 
+  
   /**
-   * Displays the traits received from the
-   * Personality Insights API in a table,
-   * just trait names and values.
-   */
-  function showTraits(data) {
-    console.log('showTraits()');
-    $traits.show();
-
-    var traitList = flatten(data.tree),
-      table = $traits;
-
-    table.empty();
-
-    // Header
-    $('#header-template').clone().appendTo(table);
-
-    // For each trait
-    for (var i = 0; i < traitList.length; i++) {
-      var elem = traitList[i];
-
-      var Klass = 'row';
-      Klass += (elem.title) ? ' model_title' : ' model_trait';
-      Klass += (elem.value === '') ? ' model_name' : '';
-
-      if (elem.value !== '') { // Trait child name
-        $('#trait-template').clone()
-          .attr('class', Klass)
-          .find('.tname')
-          .find('span').html(elem.id).end()
-          .end()
-          .find('.tvalue')
-            .find('span').html(elem.value === '' ?  '' : (elem.value + ' (± '+ elem.sampling_error+')'))
-            .end()
-          .end()
-          .appendTo(table);
-      } else {
-        // Model name
-        $('#model-template').clone()
-          .attr('class', Klass)
-          .find('.col-lg-12')
-          .find('span').html(elem.id).end()
-          .end()
-          .appendTo(table);
-      }
-    }
-  }
-
-  /**
-   * Construct a text representation for big5 traits crossing, facets and
-   * values.
+   * Construct a text representation of the results
    */
   function showTextSummary(data) {
     console.log('showTextSummary()');
     var div = $('.summary-div');
-    //div.empty();
+    div.empty();
     console.log(JSON.stringify(data));
     var res = '<p>'+JSON.stringify(data)+'</p>';
     $(res).appendTo(div)
     var bar = document.getElementById("myBar");
-    bar.style.width = data.documents[0].score*100;
+    var score = data.documents[0].score*100;
+    if(score <= 50){
+    	bar.style.backgroundColor = '#ff5733';
+    }else{
+    	bar.style.backgroundColor = '#4CAF50';
+    }
+    bar.style.width = score + '%';
+    document.getElementById("label").innerHTML = score + '%';
+    
   }
 
-/**
- * Renders the sunburst visualization. The parameter is the tree as returned
- * from the Personality Insights JSON API.
- * It uses the arguments widgetId, widgetWidth, widgetHeight and personImageUrl
- * declared on top of this script.
- */
-function showVizualization(theProfile) {
-  console.log('showVizualization()');
-
-  $('#' + widgetId).empty();
-  var d3vis = d3.select('#' + widgetId).append('svg:svg');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  var widget = {
+  /*var widget = {
     d3vis: d3vis,
     data: theProfile,
     loadingDiv: 'dummy',
@@ -274,33 +204,7 @@ function showVizualization(theProfile) {
   if (personImageUrl)
     widget.addPersonImage.call(widget, personImageUrl);
 }
-
-  /**
-   * Returns a 'flattened' version of the traits tree, to display it as a list
-   * @return array of {id:string, title:boolean, value:string} objects
-   */
-  function flatten( /*object*/ tree) {
-    var arr = [],
-      f = function(t, level) {
-        if (!t) return;
-        if (level > 0 && (!t.children || level !== 2)) {
-          arr.push({
-            'id': t.name,
-            'title': t.children ? true : false,
-            'value': (typeof (t.percentage) !== 'undefined') ? Math.floor(t.percentage * 100) + '%' : '',
-            'sampling_error': (typeof (t.sampling_error) !== 'undefined') ? Math.floor(t.sampling_error * 100) + '%' : ''
-          });
-        }
-        if (t.children && t.id !== 'sbh') {
-          for (var i = 0; i < t.children.length; i++) {
-            f(t.children[i], level + 1);
-          }
-        }
-      };
-    f(tree, 0);
-    return arr;
-  }
-
+*/
   function updateWordsCount() {
     var text = $content.val();
     var wordsCount = text.match(/\S+/g) ? text.match(/\S+/g).length : 0;
